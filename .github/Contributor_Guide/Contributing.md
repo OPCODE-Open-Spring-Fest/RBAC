@@ -1,6 +1,6 @@
 # Contribute to <Project_Name>
 
-Thank you for taking the time to contribute to <project_name>! We really appreciate it. 
+Thank you for taking the time to contribute to <project_name>! We really appreciate it.
 
 Before contributing, please make sure to read the [Code of Conduct](../../CODE_OF_CONDUCT.md). We expect you to follow it in all your interactions with the project.
 
@@ -29,9 +29,7 @@ If you want to suggest an enhancement to <Project_Name>, please [submit an issue
 If you want to contribute to <Project_Name>, submit a pull request.
 
 - url: `https://github.com/OPCODE-Open-Spring-Fest/<project_Name>/compare/branch...YOURGITHUBUSERNAME:<project_Name>:BRANCH?quick_pull=1&template=pr.md`
-  
+
 ### Requirements
 
-
 ### Setup
-

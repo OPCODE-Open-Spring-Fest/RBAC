@@ -17,7 +17,7 @@ async function run() {
       issue_number: pullNumber,
     });
 
-    const labelNames = labels.map((label) => label.name);
+    const labelNames = labels.map(label => label.name);
 
     const requiredLabels = [
       ['Type:Easy', 'Type:Medium', 'Type:Hard'],
@@ -25,8 +25,8 @@ async function run() {
       ['PR:Accept'],
     ];
 
-    const hasRequiredLabels = requiredLabels.every((labelGroup) =>
-      labelGroup.some((label) => labelNames.includes(label))
+    const hasRequiredLabels = requiredLabels.every(labelGroup =>
+      labelGroup.some(label => labelNames.includes(label))
     );
 
     if (!hasRequiredLabels) {
