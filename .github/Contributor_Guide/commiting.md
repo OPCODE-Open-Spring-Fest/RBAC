@@ -7,7 +7,6 @@
 ### Writing Commit Messages
 
 - **Clear Subject Line**: Start the commit message with a clear and concise description of the change. It should be no more than 50 characters, start with a capital letter, and be in imperative mood.
-
   - > ```bash
     > feat: Add function to calculate average
     > ```
@@ -15,7 +14,6 @@
 - **Separate Subject from Body**: If further explanation is needed, include it in the body of the commit message, following a blank line after the subject line.
 
 - **Explain the Change**: The body of the commit message should explain why the change was needed and how it was implemented. Keep it wrapped to 72 characters and written in present tense.
-
   - > ```bash
     > fix: Resolve issue with login form not submitting on Safari
     >
@@ -25,7 +23,6 @@
 - **Avoid "How" Details**: Use the commit message to explain what changes were made and why, not how they were made. Well-written code should be self-explanatory.
 
 - **Reference Issues or Pull Requests**: If the commit is related to an issue or a pull request, include the reference in the commit message. This can be done in the body of the message or at the end.
-
   - > ```bash
     > feat: Add user authentication feature
     >
@@ -37,7 +34,6 @@
 ### Commit Message Structure Rules
 
 - **Type Enum**: Ensure your commit type matches one of the predefined values: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
-
   - `build`: This type is used for changes related to build processes or tools. It includes modifications to build scripts, configuration files, and build-related dependencies.
 
   - `chore`: Chore changes typically involve tasks related to maintenance or housekeeping. This could include updating dependencies, cleaning up code, or configuring development tools.

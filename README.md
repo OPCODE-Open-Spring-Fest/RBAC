@@ -1,10 +1,11 @@
 # RBAC (Role Based Access Control)
+
 Repository for OpenSpringFest (OSF)
 
 # 🔐 RBAC Authentication System
 
 A secure and extendable **Role-Based Access Control (RBAC)** authentication system built with **Node.js, Express, and MongoDB**.  
-This project is developed and maintained under **Opcode, IIIT Bhagalpur** 🚀.  
+This project is developed and maintained under **Opcode, IIIT Bhagalpur** 🚀.
 
 ---
 
@@ -39,33 +40,41 @@ rbac-auth/
 └── README.md
 ```
 
-
 ---
 
 ## 🚀 Getting Started
 
 ### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/<your-org>/rbac-auth.git
 cd rbac-auth
 ```
+
 ### 2️⃣ Install Dependencies
+
 ```
 npm install
 ```
+
 ### 3️⃣ Setup Environment
+
 ```
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/rbac
 JWT_SECRET=your-secret-key
 ```
+
 ### 4️⃣ Run the Project
+
 ```
 npm run dev
 ```
+
 ---
 
 ### 🔄 System Flows
+
 🔑 Authentication Flow
 
 User signs up → password hashed → stored in DB
