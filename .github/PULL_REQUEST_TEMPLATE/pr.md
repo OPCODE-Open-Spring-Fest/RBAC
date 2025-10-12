@@ -1,4 +1,3 @@
-
 ## Description
 
 > Give a brief description of the pull request.
@@ -16,4 +15,3 @@
 ## Checklist
 
 - [ ] I have read the [Contributing Guidelines](../Contributor_Guide/Contruting.md).
-

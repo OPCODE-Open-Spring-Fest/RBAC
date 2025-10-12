@@ -1,0 +1,1 @@
+// Entry point for RBAC authentication system
