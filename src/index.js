@@ -1,26 +1,18 @@
 // Entry point for RBAC authentication system
 
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import authRoutes from "../src/routes/authRoutes.js";
+import connectDB from "./config/dbconnection.js";
+import {app} from "./app.js"
+import dotenv from 'dotenv';
 
 dotenv.config();
-const app = express();
 
-app.use(express.json());
-app.use("/api/auth", authRoutes);
 
-const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${process.env.PORT}`);
-    });
-  } catch (error) {
-    console.error("Server startup error:", error.message);
-  }
-};
-
-startServer();
+connectDB()
+.then(
+    app.listen(process.env.PORT || 5000 ,()=>{
+        console.log(`Server is running at port : ${process.env.PORT}`);
+    })
+)
+.catch((err)=>{
+    console.log("database connection faield",err);
+})
