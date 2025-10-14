@@ -1,0 +1,168 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RBAC API Documentation",
+    "version": "1.0.0",
+    "description": "Open Source Hackathon (Opcode) project — Role-Based Access Control (RBAC) backend API documentation.\n\nThis documentation provides details of all available API endpoints, authentication methods, and data models used in the RBAC system.",
+    "contact": {
+      "name": "Mukesh Dhadhariya",
+      "email": "mukeshdhadhariya1@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/v1/user/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Check if the API is working",
+        "description": "Simple health check endpoint to verify API is up and running.",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "API is working good"
+                    },
+                    "status": {
+                      "type": "intger",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Register a new user",
+        "description": "Create a new user account with username, email, fullname, password, and optional role.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "email",
+                  "fullname",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "mukesh dhadhariya"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "mukeshdhadhariya1@gmail.com"
+                  },
+                  "fullname": {
+                    "type": "string",
+                    "example": "Mukesh Dhadhariya"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "Optional Role ID reference",
+                    "example": "64f3c2a7e1f0b2a7b1c0d123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing fields or username/email already exists)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "All fields (username, email, fullname, password) are required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Registration failed due to server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Registration failed"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
