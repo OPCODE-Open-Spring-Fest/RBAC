@@ -1,24 +1,27 @@
-import express from "express";
-import cors from "cors"
-import cookieparser from "cookie-parser"
+import express from 'express';
+import cors from 'cors';
+import cookieparser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from '../src/utils/swagger.js'
-import UserRouter from './routes/user.route.js'
+import swaggerSpec from '../src/utils/swagger.js';
+import authRoutes from './routes/authRoutes.js';
 
-const app=express()
+const app = express();
 
-app.use(cors({
-    origin:process.env.CORS_URL,
-    credentials:true
-}))
+app.use(
+  cors({
+    origin: process.env.CORS_URL,
+    credentials: true,
+  })
+);
 
-app.use(express.json({limit:"100kb"}))
-app.use(express.urlencoded({extended:true,limit:"100kb"}))
-app.use(express.static("public"))
-app.use(cookieparser())
-app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+app.use(express.static('public'));
+app.use(cookieparser());
 
-app.use('/api/v1/user',UserRouter)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Routes
+app.use('/api/auth', authRoutes);
 
-export {app}
+export { app };
