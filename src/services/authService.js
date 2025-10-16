@@ -1,5 +1,5 @@
 import { User } from '../models/user.model.js';
-import Role from '../models/role.model.js';
+import Role from '../models/Role.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 

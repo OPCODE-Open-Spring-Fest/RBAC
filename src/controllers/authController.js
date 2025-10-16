@@ -1,129 +1,5 @@
 import { registerUserService,loginUserService } from '../services/authService.js';
 
-export const registerUser = async (req, res) => {
-  try {
-    const userData = await registerUserService(req.body);
-    return res.status(201).json({
-      success: true,
-      message: 'User registered successfully',
-      user: userData
-    });
-  } catch (error) {
-    console.error('Error in registerUser:', error.message);
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
-
-export const loginUser = async (req, res) => {
-import { loginUser } from '../services/authService.js';
-import { User } from '../models/user.model.js';
-
-/**
- * @openapi
- * /api/auth/login:
- *   post:
- *     tags:
- *       - Auth
- *     summary: User login
- *     description: Authenticate a user with email and password and return JWT token along with refresh token.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: mukesh@example.com
- *               password:
- *                 type: string
- *                 example: yourpassword123
- *     responses:
- *       200:
- *         description: Login successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Login successful
- *                 token:
- *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *                 refreshToken:
- *                   type: string
- *                   example: "d1f2e3c4-5678-90ab-cdef-1234567890ab"
- *       400:
- *         description: Missing email or password
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Email and password are required
- *       401:
- *         description: Authentication failed (invalid credentials)
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Authentication failed
- */
-export const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const result = await loginUserService({ email, password });
-
-    if (!email?.trim() || !password?.trim()) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Email and password are required' });
-    }
-
-    const { token, refreshToken } = await loginUser(email, password);
-
-    return res.status(200).json({
-      success: true,
-      message: 'Login successful',
-      token: result.accessToken,
-      user: result.user,
-      message: 'Login successful',
-      token,
-      refreshToken,
-    });
-  } catch (error) {
-    console.error('Error in loginUser:', error);
-    const status = error.statusCode || 400;
-    return res.status(status).json({ success: false, message: error.message || 'Login failed' });
-  } catch (err) {
-    return res.status(401).json({
-      success: false,
-      message: err.message || 'Authentication failed',
-    });
-  }
-};
-
 /**
  * @openapi
  * /api/auth/health:
@@ -226,41 +102,106 @@ export const CheckHealth = (req, res) => {
  *                   type: string
  *                   example: Error message
  */
-export const UserRegistration = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
-    const { username, email, fullname, password, role } = req.body;
-
-    if (
-      [username, email, fullname, password].some(field => field?.trim() === '')
-    ) {
-      return res.status(400).json({
-        message:
-          'All fields (username, email, fullname, password) are required',
-      });
-    }
-
-    const existingUser = await User.findOne({
-      $or: [{ username }, { email }],
+    const userData = await registerUserService(req.body);
+    return res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      user: userData
     });
-    if (existingUser)
-      return res
-        .status(400)
-        .json({ message: 'Username or email already exists' });
-
-    const user = await User.create({
-      username: username.toLowerCase(),
-      email,
-      fullname,
-      password,
-      role: role || null,
-    });
-
-    await user.save();
-
-    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Registration failed', error: error.message });
+    console.error('Error in registerUser:', error.message);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @openapi
+ * /api/auth/login:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: User login
+ *     description: Authenticate a user with email and password and return JWT token along with refresh token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: mukesh@example.com
+ *               password:
+ *                 type: string
+ *                 example: yourpassword123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Login successful
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "d1f2e3c4-5678-90ab-cdef-1234567890ab"
+ *       400:
+ *         description: Missing email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Email and password are required
+ *       401:
+ *         description: Authentication failed (invalid credentials)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Authentication failed
+ */
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const result = await loginUserService({ email, password });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      token: result.accessToken,
+      user: result.user,
+    });
+  } catch (error) {
+    console.error('Error in loginUser:', error);
+    const status = error.statusCode || 400;
+    return res.status(status).json({ success: false, message: error.message || 'Login failed' });
   }
 };
