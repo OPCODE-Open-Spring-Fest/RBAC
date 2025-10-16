@@ -1,4 +1,4 @@
-import Role from "../models/Role.model.js";
+import Role from '../models/Role.model.js'
 import Permission from "../models/Permission.model.js";
 
 export const createRole = async (name, permissions = []) => {

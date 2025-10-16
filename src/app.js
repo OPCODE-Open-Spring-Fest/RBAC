@@ -6,6 +6,9 @@ import rbacRoutes from './routes/rbacRoutes.js';
 import dotenv from "dotenv";
 import roleRoutes from "./routes/role.routes.js";
 import permissionRoutes from "./routes/permission.routes.js";
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from '../src/utils/swagger.js';
+
 dotenv.config();
 
 const app = express();
@@ -18,10 +21,12 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.json({ limit: "100kb" }));
+app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.use("/api/roles", roleRoutes);

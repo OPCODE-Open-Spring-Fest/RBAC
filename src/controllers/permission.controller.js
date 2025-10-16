@@ -1,5 +1,39 @@
 import * as permissionService from "../services/permission.service.js";
 
+/**
+ * @swagger
+ * tags:
+ *   name: Permissions
+ *   description: API for managing permissions
+ */
+
+/**
+ * @swagger
+ * /api/permissions:
+ *   post:
+ *     summary: Create a new permission
+ *     tags: [Permissions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: create_user
+ *               description:
+ *                 type: string
+ *                 example: Allows creation of users
+ *     responses:
+ *       201:
+ *         description: Permission created successfully
+ *       400:
+ *         description: Invalid request data
+ */
 export const createPermission = async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -10,6 +44,18 @@ export const createPermission = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/permissions:
+ *   get:
+ *     summary: Get all permissions
+ *     tags: [Permissions]
+ *     responses:
+ *       200:
+ *         description: List of permissions
+ *       500:
+ *         description: Server error
+ */
 export const getPermissions = async (req, res) => {
   try {
     const perms = await permissionService.getPermissions();
@@ -19,6 +65,27 @@ export const getPermissions = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/permissions/{id}:
+ *   get:
+ *     summary: Get a permission by ID
+ *     tags: [Permissions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Permission ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Permission details
+ *       404:
+ *         description: Permission not found
+ *       500:
+ *         description: Server error
+ */
 export const getPermissionById = async (req, res) => {
   try {
     const perm = await permissionService.getPermissionById(req.params.id);
@@ -29,6 +96,40 @@ export const getPermissionById = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/permissions/{id}:
+ *   put:
+ *     summary: Update a permission
+ *     tags: [Permissions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Permission ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: edit_user
+ *               description:
+ *                 type: string
+ *                 example: Allows editing of users
+ *     responses:
+ *       200:
+ *         description: Permission updated successfully
+ *       404:
+ *         description: Permission not found
+ *       400:
+ *         description: Invalid request data
+ */
 export const updatePermission = async (req, res) => {
   try {
     const perm = await permissionService.updatePermission(req.params.id, req.body);
@@ -39,6 +140,27 @@ export const updatePermission = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/permissions/{id}:
+ *   delete:
+ *     summary: Delete a permission
+ *     tags: [Permissions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Permission ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Permission deleted successfully
+ *       404:
+ *         description: Permission not found
+ *       500:
+ *         description: Server error
+ */
 export const deletePermission = async (req, res) => {
   try {
     const deleted = await permissionService.deletePermission(req.params.id);
