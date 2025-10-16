@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const roleSchema = new mongoose.Schema({
   name: { 
@@ -9,9 +9,9 @@ const roleSchema = new mongoose.Schema({
   permissions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Permission"
+      ref: 'Permission'
     }
   ]
 });
 
-export default mongoose.model("Role", roleSchema);
+export default mongoose.model('Role', roleSchema);
