@@ -31,6 +31,9 @@ const  userschema=new Schema({
   refreshToken:{
     type:String
   },
+  refreshTokenExpiry:{
+    type:Date
+  },
   role: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
@@ -94,6 +97,42 @@ userschema.methods.refreshAccessToken = function () {
   catch (error) {
     throw new Error('Failed to generate refresh token');
   }
+};
+
+userschema.methods.generateRefreshToken = function () {
+  try {
+    if (!process.env.REFRESH_TOKEN_SECRET) {
+      console.error('REFRESH_TOKEN_SECRET not set in environment variables');
+      throw new Error('REFRESH_TOKEN_SECRET not set in environment');
+    }
+
+    const refreshToken = jwt.sign(
+      {
+        _id: this._id,
+        type: 'refresh'
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRY || '7d',
+      }
+    );
+
+    // Set expiry date for database storage
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 7); // 7 days from now
+
+    return { refreshToken, expiryDate };
+  } 
+  catch (error) {
+    console.error('Refresh token generation error:', error.message);
+    throw new Error(`Failed to generate refresh token: ${error.message}`);
+  }
+};
+
+userschema.methods.clearRefreshToken = function () {
+  this.refreshToken = undefined;
+  this.refreshTokenExpiry = undefined;
+  return this.save();
 };
 
 
