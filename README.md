@@ -63,6 +63,10 @@ npm install
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/rbac
 JWT_SECRET=your-secret-key
+RESEND_API_KEY=your-resend-api-key
+
+🔑 Note: The RESEND_API_KEY can be obtained by creating an account on Resend Mail
+ and generating an API key.
 ```
 
 ### 4️⃣ Run the Project
