@@ -68,17 +68,11 @@ PORT=5000
 
 # Database Configuration
 MONGO_URI=mongodb://localhost:27017/rbac
+JWT_SECRET=your-secret-key
+RESEND_API_KEY=your-resend-api-key
 
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-here
-JWT_EXPIRY=1d
-
-# Refresh Token Configuration
-REFRESH_TOKEN_SECRET=your-super-secret-refresh-token-key-here
-REFRESH_TOKEN_EXPIRY=7d
-
-# CORS Configuration
-CORS_URL=http://localhost:3000
+🔑 Note: The RESEND_API_KEY can be obtained by creating an account on Resend Mail
+ and generating an API key.
 ```
 
 ### 4️⃣ Run the Project
