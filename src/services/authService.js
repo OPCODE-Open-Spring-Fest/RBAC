@@ -53,14 +53,17 @@ export const loginUserService = async ({ email, password }) => {
   }
 
   const user = await User.findOne({ email }).populate('role');
+ 
   if (!user) {
     const err = new Error('Invalid credentials'); 
     err.statusCode = 401;
     throw err;
   }
+ 
 
-  const isMatch = bcrypt.compare(password, user.password);
-
+  const isMatch = await bcrypt.compare(password, user.password);
+  
+   
   if (!isMatch) {
     const err = new Error('Invalid credentials');
     err.statusCode = 401;
