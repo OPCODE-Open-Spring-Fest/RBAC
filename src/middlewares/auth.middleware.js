@@ -1,22 +1,26 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import Role from "../models/Role.model.js";
+import ApiError from "../utils/ApiError.js";
 
 export const authMiddleware = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    if (!token) return next(new ApiError(401, 'No token provided'));
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // populate role for convenience
     const user = await User.findById(decoded._id).populate("role");
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) return next(new ApiError(404, 'User not found'));
 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+      return next(new ApiError(401, 'Invalid or expired token'));
+    }
+    return next(new ApiError(500, 'Error in authentication middleware'));
   }
 };
 
@@ -24,7 +28,7 @@ export const rbacMiddleware = (requiredRole) => {
   return async (req, res, next) => {
     try {
       if (!req.user?.role) {
-        return res.status(403).json({ message: "Role not assigned" });
+        return next(new ApiError(403, 'Role not assigned'));
       }
       let userRole;
       if (typeof req.user.role === "object" && req.user.role !== null) {
@@ -34,12 +38,12 @@ export const rbacMiddleware = (requiredRole) => {
       }
 
       if (!userRole || userRole.name !== requiredRole) {
-        return res.status(403).json({ message: "Access denied" });
+        return next(new ApiError(403, 'Access denied'));
       }
 
       next();
     } catch (error) {
-      return res.status(500).json({ message: "Error in RBAC middleware" });
+      return next(new ApiError(500, 'Error in RBAC middleware'));
     }
   };
 };
