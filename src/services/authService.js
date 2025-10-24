@@ -3,14 +3,19 @@ import Role from '../models/Role.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const signAccessToken = (payload) => {
+const signAccessToken = payload => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET not set in environment');
   }
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
-export const registerUserService = async ({ username, email, fullname, password }) => {
+export const registerUserService = async ({
+  username,
+  email,
+  fullname,
+  password,
+}) => {
   if (!username || !email || !password || !fullname) {
     throw new Error('All fields are required');
   }
@@ -26,7 +31,7 @@ export const registerUserService = async ({ username, email, fullname, password 
   }
 
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password,salt);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const newUser = await User.create({
     username,
@@ -44,7 +49,6 @@ export const registerUserService = async ({ username, email, fullname, password 
   };
 };
 
-
 export const loginUserService = async ({ email, password }) => {
   if (!email || !password) {
     const err = new Error('Email and password are required');
@@ -55,7 +59,7 @@ export const loginUserService = async ({ email, password }) => {
   const user = await User.findOne({ email }).populate('role');
  
   if (!user) {
-    const err = new Error('Invalid credentials'); 
+    const err = new Error('Invalid credentials');
     err.statusCode = 401;
     throw err;
   }
