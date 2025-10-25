@@ -9,6 +9,8 @@ import authRoutes from "./routes/authRoutes.js";
 import rbacRoutes from "./routes/rbacRoutes.js";
 import roleRoutes from "./routes/role.routes.js";
 import permissionRoutes from "./routes/permission.routes.js";
+import rateLimiter from './middlewares/rateLimiter.js';
+import errorHandler from "./middlewares/error.middleware.js";
 
 dotenv.config();
 
@@ -41,6 +43,9 @@ app.use(
 
 //  Routes
 app.use("/api/auth", authRoutes);
+app.use(rateLimiter);
+
+// Routes
 app.use("/api/roles", roleRoutes);
 app.use("/api/permissions", permissionRoutes);
 app.use("/api/rbac-test", rbacRoutes);
@@ -49,5 +54,7 @@ app.use("/api/rbac-test", rbacRoutes);
 app.get("/", (req, res) => {
   res.send("RBAC is running...");
 });
+//global error handler
+app.use(errorHandler);  
 
 export { app };
