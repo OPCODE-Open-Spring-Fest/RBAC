@@ -4,7 +4,9 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 import logger from "./config/logger.js";
+import swaggerSpec from "./config/swagger.js";
 import authRoutes from "./routes/authRoutes.js";
 import rbacRoutes from "./routes/rbacRoutes.js";
 import roleRoutes from "./routes/role.routes.js";
@@ -38,6 +40,17 @@ app.use(
     stream: {
       write: (message) => logger.http(message.trim()),
     },
+  })
+);
+
+// Swagger API Documentation
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'RBAC API Docs',
   })
 );
 

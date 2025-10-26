@@ -4,8 +4,8 @@ const connectDB=async ()=>{
     try {
 
         if(!process.env.MONGO_URI){
-            console.error('MONGO_URI not found in .env');
-            process.exit(1);
+            console.warn('MONGO_URI not found in .env - database features will be unavailable');
+            return;
         }
 
         await mongoose.connect(`${process.env.MONGO_URI}`)
@@ -14,8 +14,7 @@ const connectDB=async ()=>{
 
     } catch (error) {
 
-        console.log("Mongodb connnection error : ",error);
-        process.exit(1)
+        console.warn("Mongodb connection error - database features will be unavailable:",error.message);
         
     }
 }
