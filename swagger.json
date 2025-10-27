@@ -30,37 +30,6 @@
     }
   ],
   "paths": {
-    "/api/auth/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Check if the API is working",
-        "description": "Simple health check endpoint to verify API is up and running.",
-        "responses": {
-          "200": {
-            "description": "API is healthy",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "API is working good"
-                    },
-                    "status": {
-                      "type": "intger",
-                      "example": 200
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/auth/register": {
       "post": {
         "tags": [

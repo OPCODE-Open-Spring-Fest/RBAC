@@ -1,4 +1,7 @@
+import asyncHandler from 'express-async-handler';
 import * as permissionService from "../services/permission.service.js";
+import ApiError from '../utils/ApiError.js';
+
 
 /**
  * @swagger
@@ -34,15 +37,11 @@ import * as permissionService from "../services/permission.service.js";
  *       400:
  *         description: Invalid request data
  */
-export const createPermission = async (req, res) => {
-  try {
-    const { name, description } = req.body;
-    const perm = await permissionService.createPermission(name, description);
-    res.status(201).json(perm);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
+export const createPermission = asyncHandler(async (req, res) => {
+  const { name, description } = req.body;
+  const perm = await permissionService.createPermission(name, description);
+  res.status(201).json(perm);
+});
 
 /**
  * @swagger
@@ -56,14 +55,11 @@ export const createPermission = async (req, res) => {
  *       500:
  *         description: Server error
  */
-export const getPermissions = async (req, res) => {
-  try {
-    const perms = await permissionService.getPermissions();
-    res.json(perms);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+export const getPermissions = asyncHandler(async (req, res) => {
+  const perms = await permissionService.getPermissions();
+  res.json(perms);
+});
+
 
 /**
  * @swagger
@@ -86,15 +82,11 @@ export const getPermissions = async (req, res) => {
  *       500:
  *         description: Server error
  */
-export const getPermissionById = async (req, res) => {
-  try {
-    const perm = await permissionService.getPermissionById(req.params.id);
-    if (!perm) return res.status(404).json({ message: "Permission not found" });
-    res.json(perm);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+export const getPermissionById = asyncHandler(async (req, res) => {
+  const perm = await permissionService.getPermissionById(req.params.id);
+  if (!perm) throw new ApiError(404, 'Permission not found');
+  res.json(perm);
+});
 
 /**
  * @swagger
@@ -130,15 +122,12 @@ export const getPermissionById = async (req, res) => {
  *       400:
  *         description: Invalid request data
  */
-export const updatePermission = async (req, res) => {
-  try {
-    const perm = await permissionService.updatePermission(req.params.id, req.body);
-    if (!perm) return res.status(404).json({ message: "Permission not found" });
-    res.json(perm);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
+export const updatePermission = asyncHandler(async (req, res) => {
+  const perm = await permissionService.updatePermission(req.params.id, req.body);
+  if (!perm) throw new ApiError(404, 'Permission not found');
+  res.json(perm);
+});
+
 
 /**
  * @swagger
@@ -161,12 +150,8 @@ export const updatePermission = async (req, res) => {
  *       500:
  *         description: Server error
  */
-export const deletePermission = async (req, res) => {
-  try {
-    const deleted = await permissionService.deletePermission(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Permission not found" });
-    res.json({ message: "Permission deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+export const deletePermission = asyncHandler(async (req, res) => {
+  const deleted = await permissionService.deletePermission(req.params.id);
+  if (!deleted) throw new ApiError(404, 'Permission not found');
+  res.json({ message: "Permission deleted successfully" });
+});

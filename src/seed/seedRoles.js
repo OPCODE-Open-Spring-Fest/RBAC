@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Role from '../models/role.model.js';
-import Permission from '../models/permission.model.js';
+import Role from '../models/Role.model.js';
+import Permission from '../models/Permission.model.js';
 
 dotenv.config();
 
