@@ -1,21 +1,73 @@
-import express from 'express';
-import cors from 'cors';
-import cookieparser from 'cookie-parser';
-import authRoutes from './routes/authRoutes.js';
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import logger from "./config/logger.js";
+import swaggerSpec from "./config/swagger.js";
+import authRoutes from "./routes/authRoutes.js";
+import rbacRoutes from "./routes/rbacRoutes.js";
+import roleRoutes from "./routes/role.routes.js";
+import permissionRoutes from "./routes/permission.routes.js";
+import rateLimiter from './middlewares/rateLimiter.js';
+import errorHandler from "./middlewares/error.middleware.js";
+
+dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.CORS_URL,
-  credentials: true
-}));
+app.use(helmet());
 
-app.use(express.json({ limit: '16kb' }));
-app.use(express.urlencoded({ extended: true, limit: '16kb' }));
-app.use(express.static('public'));
-app.use(cookieparser());
+app.use(
+  cors({
+    origin: process.env.CORS_URL || "*",
+    credentials: true,
+  })
+);
+
+//  Body parsers and static files
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public"));
+app.use(cookieParser());
+
+// logging middleware
+app.use(morgan("combined", { stream: logger.stream }));
+app.use(
+  morgan("tiny", {
+    stream: {
+      write: (message) => logger.http(message.trim()),
+    },
+  })
+);
+
+// Swagger API Documentation
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'RBAC API Docs',
+  })
+);
+
+//  Routes
+app.use("/api/auth", authRoutes);
+app.use(rateLimiter);
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use("/api/roles", roleRoutes);
+app.use("/api/permissions", permissionRoutes);
+app.use("/api/rbac-test", rbacRoutes);
+
+//  Root route
+app.get("/", (req, res) => {
+  res.send("RBAC is running...");
+});
+//global error handler
+app.use(errorHandler);  
 
 export { app };
