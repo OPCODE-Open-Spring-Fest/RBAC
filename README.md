@@ -73,6 +73,42 @@ npm run dev
 
 ---
 
+## 🐳 Docker Deployment
+
+This application can be easily deployed using Docker! See [README.Docker.md](./README.Docker.md) for detailed instructions.
+
+### Quick Start with Docker Compose
+
+```bash
+# Copy environment variables
+cp .env.example .env
+
+# Start the application (production mode)
+docker compose up -d
+
+# Start in development mode with hot reload
+docker compose --profile dev up -d app-dev
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+> **Note:** Use `docker compose` (v2) or `docker-compose` (v1) depending on your installation.
+
+The Docker setup includes:
+
+- ✅ Optimized multi-stage Dockerfile
+- ✅ MongoDB database container
+- ✅ Non-root user for security
+- ✅ Health checks for services
+- ✅ Development and production configurations
+- ✅ Volume persistence for database
+
+---
+
 ### 🔄 System Flows
 
 🔑 Authentication Flow

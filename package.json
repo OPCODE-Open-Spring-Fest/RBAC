@@ -8,13 +8,19 @@
     "prettier": "^3.6.2"
   },
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "prepare": "husky",
     "commitlint": "commitlint --edit",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:build": "docker build -t rbac-app:latest .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:dev": "docker-compose --profile dev up -d app-dev"
   },
   "type": "module",
   "dependencies": {
