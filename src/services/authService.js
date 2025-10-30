@@ -30,7 +30,9 @@ export const registerUserService = async ({
     throw new Error('Default role not found. Please seed roles first.');
   }
 
-  // No need to hash password here - the User model's pre-save hook will handle it
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   const newUser = await User.create({
     username,
     email,
